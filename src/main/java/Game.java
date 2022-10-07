@@ -1,5 +1,6 @@
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
@@ -11,11 +12,8 @@ import java.io.IOException;
 
 public class Game {
     private Screen screen;
-    /*private int x = 10;
-    private int y = 10;*/
-    Hero hero;
-
-
+    Arena arena;
+    TextGraphics graphics;
     public Game(){
         try{
             TerminalSize terminalSize = new TerminalSize(40, 20);
@@ -26,7 +24,9 @@ public class Game {
             screen.setCursorPosition(null); // we don't need a cursor
             screen.startScreen(); // screens must be started
             screen.doResizeIfNecessary();
-            hero = new Hero(10, 10);
+
+            graphics = screen.newTextGraphics();
+            arena = new Arena(15, 15);
         }
         catch(IOException e){
             e.printStackTrace();
@@ -35,7 +35,7 @@ public class Game {
 
     private void draw() throws IOException{
         screen.clear();
-        hero.draw(screen);
+        arena.draw(graphics);
         screen.refresh();
     }
 
@@ -51,25 +51,9 @@ public class Game {
     }
 
     private boolean processKey(KeyStroke key){
-        if((key.getKeyType()== KeyType.Character && key.getCharacter()=='q') ||key.getKeyType() == KeyType.EOF){
-            return false;
-        }
-        if (key.getKeyType() == KeyType.ArrowUp){
-            moveHero(hero.move_up());
-        }
-        if (key.getKeyType() == KeyType.ArrowDown){
-            moveHero(hero.move_down());
-        }
-        if (key.getKeyType() == KeyType.ArrowLeft){
-            moveHero(hero.move_left());
-        }
-        if (key.getKeyType() == KeyType.ArrowRight){
-            moveHero(hero.move_right());
-        }
-        return true;
+        return arena.processKey(key);
     }
 
-    private void moveHero(Position position){
-        hero.setPosition(position);
-    }
+
+
 }

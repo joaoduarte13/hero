@@ -1,7 +1,11 @@
+import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
+import com.googlecode.lanterna.SGR;
 
 public class Hero {
     Position position;
@@ -9,8 +13,10 @@ public class Hero {
         position = new Position(X, Y);
     }
 
-    public void draw(Screen screen){
-        screen.setCharacter(position.getX(), position.getY(), TextCharacter.fromCharacter('X')[0]);
+    public void draw(TextGraphics graphics) {
+        graphics.setForegroundColor(TextColor.Factory.fromString("#FFFF33"));
+        graphics.enableModifiers(SGR.BOLD);
+        graphics.putString(new TerminalPosition(position.getX(), position.getY()), "X");
     }
 
     public Position move_up( ){
@@ -27,10 +33,10 @@ public class Hero {
     }
 
     public void setPosition(Position position){
-        int xx = position.getX();
+       /* int xx = position.getX();
         int yy = position.getY();
         System.out.println(xx);
-        System.out.println(yy);
+        System.out.println(yy);*/
         this.position = position;
     }
 }
