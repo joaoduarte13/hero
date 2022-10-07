@@ -55,21 +55,21 @@ public class Game {
             return false;
         }
         if (key.getKeyType() == KeyType.ArrowUp){
-            hero.move_up();
+            moveHero(hero.move_up());
         }
         if (key.getKeyType() == KeyType.ArrowDown){
-            hero.move_down();
+            moveHero(hero.move_down());
         }
         if (key.getKeyType() == KeyType.ArrowLeft){
-            hero.move_left();
+            moveHero(hero.move_left());
         }
         if (key.getKeyType() == KeyType.ArrowRight){
-            hero.move_right();
+            moveHero(hero.move_right());
         }
-
-
-       /* System.out.println(x);
-        System.out.println(y);*/
         return true;
+    }
+
+    private void moveHero(Position position){
+        hero.setPosition(position);
     }
 }
