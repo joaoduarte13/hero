@@ -40,28 +40,26 @@ public class Game {
     }
 
     public void run() throws IOException{
-        /*boolean running = true;
-        KeyStroke key;
-        while(true){
-            draw();
-            key = screen.readInput();
-            processKey(key);
-            if (key.getKeyType() == KeyType.Character && key.getCharacter() == ('q'))
-                screen.close();
-            if (key.getKeyType() == KeyType.EOF)
-                break;
-        }
-        screen.close();*/
         while(true) {
             draw();
             com.googlecode.lanterna.input.KeyStroke key = screen.readInput();
             processKey(key);
 
+            if(arena.verifyMonsterCollisions()){
+                screen.close();
+                break;
+            }
+
             if (key.getKeyType() == KeyType.Character && key.getCharacter() == ('q'))
                 screen.close();
             if (key.getKeyType() == KeyType.EOF)
                 break;
 
+            arena.moveMonsters();
+            if(arena.verifyMonsterCollisions()){
+                screen.close();
+                break;
+            }
         }
     }
     public void processKey(KeyStroke key){
