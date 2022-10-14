@@ -26,7 +26,7 @@ public class Game {
             screen.doResizeIfNecessary();
 
             graphics = screen.newTextGraphics();
-            arena = new Arena(15, 15);
+            arena = new Arena(40, 20);
         }
         catch(IOException e){
             e.printStackTrace();
@@ -40,20 +40,37 @@ public class Game {
     }
 
     public void run() throws IOException{
-        boolean running = true;
+        /*boolean running = true;
         KeyStroke key;
-        while(running){
+        while(true){
             draw();
             key = screen.readInput();
-            running = processKey(key);
+            processKey(key);
+            if (key.getKeyType() == KeyType.Character && key.getCharacter() == ('q'))
+                screen.close();
+            if (key.getKeyType() == KeyType.EOF)
+                break;
         }
-        screen.close();
+        screen.close();*/
+        while(true) {
+            draw();
+            com.googlecode.lanterna.input.KeyStroke key = screen.readInput();
+            processKey(key);
+
+            if (key.getKeyType() == KeyType.Character && key.getCharacter() == ('q'))
+                screen.close();
+            if (key.getKeyType() == KeyType.EOF)
+                break;
+
+        }
     }
-
-    private boolean processKey(KeyStroke key){
-        return arena.processKey(key);
+    public void processKey(KeyStroke key){
+        switch (key.getKeyType()) {
+            case ArrowUp    -> arena.moveHero(arena.move_up());
+            case ArrowDown  -> arena.moveHero(arena.move_down());
+            case ArrowLeft  -> arena.moveHero(arena.move_left());
+            case ArrowRight -> arena.moveHero(arena.move_right());
+        }
     }
-
-
 
 }

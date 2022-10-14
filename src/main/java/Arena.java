@@ -25,50 +25,34 @@ public class Arena {
        /* wall = new Wall();*/
     }
 
-    public boolean processKey(KeyStroke key){
-        if((key.getKeyType()== KeyType.Character && key.getCharacter()=='q') ||key.getKeyType() == KeyType.EOF){
-            return false;
-        }
-        else if (key.getKeyType() == KeyType.ArrowUp){
-            moveHero(hero.move_up());
-        }
-        else if (key.getKeyType() == KeyType.ArrowDown){
-            moveHero(hero.move_down());
-        }
-        else if (key.getKeyType() == KeyType.ArrowLeft){
-            moveHero(hero.move_left());
-        }
-        else if (key.getKeyType() == KeyType.ArrowRight){
-            moveHero(hero.move_right());
-        }
-        return true;
-    }
+
 
     public void draw(TextGraphics graphics){
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
-        graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(this.width, this.height), ' ');
-        for (Wall wall : walls)
-            wall.draw(graphics);
+        graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
+
         hero.draw(graphics);
 
+        for (Wall wall : walls)
+            wall.draw(graphics);
     }
 
-    private void moveHero(Position position){
-        System.out.println(canHeroMove(position));
+    public Position move_up(){return new Position(hero.getPosition().getX(), hero.getPosition().getY() - 1);}
+    public Position move_down(){return new Position(hero.getPosition().getX(), hero.getPosition().getY() + 1);}
+    public Position move_left(){
+        return new Position(hero.getPosition().getX()-1, hero.getPosition().getY());
+    }
+    public Position move_right(){return new Position(hero.getPosition().getX()+1, hero.getPosition().getY());}
+
+    public void moveHero(Position position){
         if(canHeroMove(position))
             hero.setPosition(position);
     }
 
     public boolean canHeroMove(Position position){
-        for(Wall wall : walls){
-             /*if(position.equals(wall.getPosition()))
-                return false;*/
-
-            if(abs(position.getX()) >= this.width ||  abs(position.getY()) >= this.height || position.equals(wall.getPosition()))
-                return false;
-        }
-
-        return true;
+        return (position.getX() >= 0 && position.getX() < width) &&
+                (position.getY() >= 0 && position.getY() < height) &&
+                !walls.contains(new Wall(position.getX(), position.getY()));
     }
 
     private List<Wall> createWalls() {

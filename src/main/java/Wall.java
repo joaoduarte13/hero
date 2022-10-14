@@ -14,10 +14,6 @@ public class Wall extends Element{
     }
      public void draw(TextGraphics graphics){
          graphics.setForegroundColor(TextColor.Factory.fromString("#FF0000"));
-         graphics.putString(new TerminalPosition(position.getX(), position.getY()),"#");
-     }
-
-     public Position getPosition(){
-        return this.position;
+         graphics.putString(new TerminalPosition(getPosition().getX(), getPosition().getY()),"#");
      }
 }
